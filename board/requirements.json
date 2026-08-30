@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "repo": "PCBA_3Phase_BLDC_Controller",
+  "board_id": "bldc_controller_3ph",
+  "benchmark_id": 18,
+  "title": "Three-Phase BLDC Motor Controller",
+  "description": "The split between what BRIEF.md fixes and what it leaves open. Every fixed_requirements entry carries the verbatim brief text that substantiates it, bound to the recorded brief digest. An open_decisions entry is a choice for the design agent: record it in 'chosen' with 'rationale', and never move it into fixed_requirements. Missing details are design freedom, not permission to fabricate unstated user requirements.",
+  "brief": {
+    "path": "../BRIEF.md",
+    "sha256": "d3eef382d8d91ccdb28d72d3f3a9c89a89e0ec95a4ba4f573bd68555a4eced59",
+    "authority": "supplied by the benchmark; authoritative; preserved byte for byte and never edited"
+  },
+  "metadata": {
+    "category": "power-motor",
+    "difficulty": 4,
+    "detail": 4,
+    "layers": "4",
+    "stressors": [
+      "three half-bridges",
+      "gate-drive loops",
+      "phase-current sensing",
+      "thermal/high-current"
+    ]
+  },
+  "derivation": {
+    "method": "BRIEF.md was read and split; no design decision was taken. Every fixed_requirements entry, and every spec-table row sourced from the brief, carries a quotation that was checked by literal substring match against the brief bytes digested above. The build refuses to emit this file if any quotation is not found.",
+    "quotations_verified": 30,
+    "review": "two rounds of adversarial review against the brief, looking for invented requirements, lost requirements, evidence supporting a weaker claim than the one made beside it, and worksheet questions that presuppose their own answer"
+  },
+  "fixed_requirements": [
+    {
+      "id": "REQ-01",
+      "requirement": "The board is a three-phase BLDC controller operating from a 24 V DC bus.",
+      "brief_evidence": "Design a 24 V three-phase BLDC controller"
+    },
+    {
+      "id": "REQ-02",
+      "requirement": "It must support approximately 10 A continuous phase current with a 20 A short-duration peak.",
+      "brief_evidence": "approximately 10 A continuous phase current and 20 A short-duration peak"
+    },
+    {
+      "id": "REQ-03",
+      "requirement": "The power stage uses six external N-channel MOSFETs.",
+      "brief_evidence": "Use six external N-channel MOSFETs, a three-phase gate driver"
+    },
+    {
+      "id": "REQ-04",
+      "requirement": "The MOSFETs are driven by a three-phase gate driver.",
+      "brief_evidence": "a three-phase gate driver, an MCU with motor-control timers"
+    },
+    {
+      "id": "REQ-05",
+      "requirement": "The board includes an MCU that has motor-control timers.",
+      "brief_evidence": "an MCU with motor-control timers, phase/bus current sensing"
+    },
+    {
+      "id": "REQ-06",
+      "requirement": "The design includes phase/bus current sensing.",
+      "brief_evidence": "phase/bus current sensing, DC bus voltage sensing"
+    },
+    {
+      "id": "REQ-07",
+      "requirement": "The design includes DC bus voltage sensing.",
+      "brief_evidence": "DC bus voltage sensing, encoder/Hall inputs, and CAN-FD."
+    },
+    {
+      "id": "REQ-08",
+      "requirement": "The design provides encoder/Hall inputs.",
+      "brief_evidence": "DC bus voltage sensing, encoder/Hall inputs, and CAN-FD."
+    },
+    {
+      "id": "REQ-09",
+      "requirement": "The board provides a CAN-FD communications interface.",
+      "brief_evidence": "encoder/Hall inputs, and CAN-FD."
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "The PCB must make the gate-drive and power-commutation loops explicit and compact.",
+      "brief_evidence": "The PCB must make the gate-drive and power-commutation loops explicit and compact"
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "The PCB must provide substantial copper for the phase/bus current.",
+      "brief_evidence": "provide substantial copper for the phase/bus current"
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "The PCB must keep current-sense routing Kelvin and away from switching nodes.",
+      "brief_evidence": "keep current-sense routing Kelvin and away from switching nodes"
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "The PCB must provide a plausible thermal path.",
+      "brief_evidence": "and provide a plausible thermal path"
+    },
+    {
+      "id": "REQ-14",
+      "requirement": "Connectors for DC power and motor phases should sit near the power stage. The brief states this as a should, not as one of its must clauses.",
+      "brief_evidence": "Connectors for DC power and motor phases should sit near the power stage."
+    },
+    {
+      "id": "REQ-15",
+      "requirement": "Logic and communications should occupy a quieter region of the board. The brief states this as a should, not as one of its must clauses.",
+      "brief_evidence": "Logic and communications should occupy a quieter region of the board."
+    },
+    {
+      "id": "REQ-16",
+      "requirement": "The repository should remain a consumer of the shared PCBA_AutoDesignAndTest toolkit rather than accumulating board-specific logic in the toolkit.",
+      "brief_evidence": "The repository should remain a consumer of the shared `PCBA_AutoDesignAndTest` toolkit rather than accumulating board-specific logic in the toolkit."
+    },
+    {
+      "id": "REQ-17",
+      "requirement": "Stated requirements are authoritative; where the brief leaves a choice open, the design agent must make and document a reasonable engineering decision rather than invent a hidden user requirement.",
+      "brief_evidence": "Treat stated requirements as authoritative; where the brief leaves choices open, make and document reasonable engineering decisions rather than inventing hidden user requirements."
+    }
+  ],
+  "open_decisions": [
+    {
+      "id": "OPEN-01",
+      "decision": "Selection of the six N-channel MOSFETs: voltage and current rating, package, RDS(on) versus gate-charge trade-off, and avalanche/SOA margin.",
+      "why_open": "The brief fixes only the count, type and external placement of the switches; it names no device, package or rating.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-02",
+      "decision": "Selection of the three-phase gate driver and the drive architecture around it (bootstrap versus separately supplied high side, integrated versus external dead-time control, which built-in protection features are relied on, and how many distinct gate-drive loops the chosen scheme creates).",
+      "why_open": "The brief requires \"a three-phase gate driver\" and says nothing about its supply scheme, features or part.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-03",
+      "decision": "Gate-drive parameters: gate drive impedance and any gate resistor values, turn-on/turn-off asymmetry, dead time, and any gate clamping or pull-down for safe start-up.",
+      "why_open": "The brief constrains the physical loop but states no switching or gate-drive numbers.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-04",
+      "decision": "MCU selection: family, core, package, memory, peripheral count, and debug/programming interface.",
+      "why_open": "The brief requires only \"an MCU with motor-control timers\" and names no device or vendor.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-05",
+      "decision": "Current-sense topology: shunt versus magnetic sensing, low-side versus in-line/high-side placement, how many phases are individually sensed, whether phase and bus current are measured by separate chains or derived from a shared one, sense element value and power rating, and the amplifier or integrated sensor used.",
+      "why_open": "The brief mandates \"phase/bus current sensing\" and a Kelvin routing rule, but not the sensing method, placement or channel count, and does not expand its own phase/bus shorthand.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-06",
+      "decision": "DC bus voltage sense implementation: attenuation method and ratio, filtering, ADC scaling and any protection on that node.",
+      "why_open": "The brief requires DC bus voltage sensing but specifies no measurement range, accuracy or implementation.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-07",
+      "decision": "Encoder and Hall interface details: whether both are populated simultaneously or treated as alternatives, connector, sensor supply and its current budget, single-ended versus differential encoder support, level shifting, input filtering and protection, and channel count.",
+      "why_open": "The brief names \"encoder/Hall inputs\" as a requirement without defining the electrical interface or resolving whether its slash means both together or either one.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-08",
+      "decision": "CAN-FD implementation: transceiver choice, bit rates, termination strategy, bus connector, common-mode/ESD protection, and whether isolation is used.",
+      "why_open": "The brief names the interface only; it states no data rate, connector, topology or isolation requirement.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-09",
+      "decision": "Auxiliary rail generation: how logic, analog and gate-drive supplies are derived from the 24 V bus, their voltages, topology (switching versus linear), sequencing and current budget.",
+      "why_open": "The brief is silent on internal rails; it fixes only the 24 V bus.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-10",
+      "decision": "DC-link and decoupling capacitance: bulk capacitance value and technology, ripple-current budget, and placement relative to the half-bridges.",
+      "why_open": "The brief demands compact commutation loops but states no capacitance, ripple or ESR requirement.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-11",
+      "decision": "Protection strategy: overcurrent and short-circuit response and its speed, reverse-polarity protection, overvoltage/regeneration handling, fault latching and recovery, and any thermal shutdown.",
+      "why_open": "The brief specifies sensing but names no protection function, threshold or response behaviour.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-12",
+      "decision": "Commutation and control scheme (trapezoidal, sinusoidal or field-oriented), PWM/modulation scheme and switching frequency, and the extent of firmware in scope.",
+      "why_open": "The brief specifies motor-control timers and position-feedback inputs but not the control algorithm, modulation scheme or switching frequency.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-13",
+      "decision": "Thermal path implementation: which devices the path is built for, copper area and weight devoted to them, thermal via pattern, whether a heatsink or chassis coupling is used, airflow assumption, ambient range and allowed temperature rise.",
+      "why_open": "The brief asks for \"a plausible thermal path\" without naming what it serves, and leaves every quantitative thermal target and mechanism unstated.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-14",
+      "decision": "Board outline, dimensions, mounting-hole pattern, keep-outs and any enclosure or heatsink mechanical interface.",
+      "why_open": "The brief gives placement preferences but no dimensions, shape or mechanical envelope.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-15",
+      "decision": "Stackup detail: whether the metadata's likely 4 layers is adopted, copper weights, dielectric thicknesses and plane assignment.",
+      "why_open": "The layer count is a benchmark metadata hint, not a stated requirement, and the brief fixes no copper weight or stackup.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-16",
+      "decision": "Connector selection for DC power, motor phases, encoder/Hall and CAN: type, current and temperature rating, orientation and part numbers.",
+      "why_open": "The brief expresses only a preference for where the DC power and motor-phase connectors sit, not what they are.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-17",
+      "decision": "Grounding and return strategy: partitioning of power return, gate-drive return, analog sense return and logic ground, plane splits, and the star or single-point connection.",
+      "why_open": "The brief requires Kelvin sensing and prefers a quiet logic region but does not define the ground architecture that achieves them.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-18",
+      "decision": "Input EMI filtering and switching-noise containment on the 24 V input and motor phases, and any snubbing at the half-bridges.",
+      "why_open": "The brief is silent on EMC targets, filtering and snubbers.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-19",
+      "decision": "Test, bring-up and calibration provisions: test points, programming interface, status indicators, current-sense calibration method and safe low-power bring-up path.",
+      "why_open": "The brief states no test or manufacturing-test requirement.",
+      "chosen": null,
+      "rationale": null
+    },
+    {
+      "id": "OPEN-20",
+      "decision": "Fabrication and assembly targets: fabricator capability class, single- versus double-sided assembly, minimum trace/space and via rules adopted, and which current-capacity standard is cited to justify them.",
+      "why_open": "The brief names no fabricator, process, standard or manufacturability constraint.",
+      "chosen": null,
+      "rationale": null
+    }
+  ]
+}
