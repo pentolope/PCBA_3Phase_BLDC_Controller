@@ -25,6 +25,7 @@
   "derivation": {
     "method": "BRIEF.md was read and split; no design decision was taken. Every fixed_requirements entry, and every spec-table row sourced from the brief, carries a quotation that was checked by literal substring match against the brief bytes digested above. The build refuses to emit this file if any quotation is not found.",
     "quotations_verified": 30,
+    "where_the_quotations_are": "Every one of them is in this file: fixed_requirements[].brief_evidence and brief_spec_rows[].brief_evidence. The count above is the sum of those two lists, so it is recomputable from this repository alone - re-read BRIEF.md and check each string is a substring of it. brief_spec_rows carries the quotations behind the README's spec table, which would otherwise cite the brief with the evidence left in a build script.",
     "review": "two rounds of adversarial review against the brief, looking for invented requirements, lost requirements, evidence supporting a weaker claim than the one made beside it, and worksheet questions that presuppose their own answer"
   },
   "fixed_requirements": [
@@ -112,6 +113,73 @@
       "id": "REQ-17",
       "requirement": "Stated requirements are authoritative; where the brief leaves a choice open, the design agent must make and document a reasonable engineering decision rather than invent a hidden user requirement.",
       "brief_evidence": "Treat stated requirements as authoritative; where the brief leaves choices open, make and document reasonable engineering decisions rather than inventing hidden user requirements."
+    }
+  ],
+  "brief_spec_rows": [
+    {
+      "aspect": "DC bus voltage",
+      "value": "24 V",
+      "brief_evidence": "Design a 24 V three-phase BLDC controller"
+    },
+    {
+      "aspect": "Phase current rating",
+      "value": "Approximately 10 A continuous, 20 A short-duration peak",
+      "brief_evidence": "approximately 10 A continuous phase current and 20 A short-duration peak"
+    },
+    {
+      "aspect": "Power switches",
+      "value": "Six external N-channel MOSFETs (three half-bridges)",
+      "brief_evidence": "Use six external N-channel MOSFETs, a three-phase gate driver"
+    },
+    {
+      "aspect": "Gate drive",
+      "value": "A three-phase gate driver",
+      "brief_evidence": "a three-phase gate driver, an MCU with motor-control timers"
+    },
+    {
+      "aspect": "Controller",
+      "value": "An MCU with motor-control timers",
+      "brief_evidence": "an MCU with motor-control timers, phase/bus current sensing"
+    },
+    {
+      "aspect": "Sensing",
+      "value": "Phase/bus current sensing and DC bus voltage sensing",
+      "brief_evidence": "phase/bus current sensing, DC bus voltage sensing"
+    },
+    {
+      "aspect": "Current-sense routing rule",
+      "value": "Kelvin routing, kept away from switching nodes",
+      "brief_evidence": "keep current-sense routing Kelvin and away from switching nodes"
+    },
+    {
+      "aspect": "Position feedback",
+      "value": "Encoder/Hall inputs",
+      "brief_evidence": "DC bus voltage sensing, encoder/Hall inputs, and CAN-FD."
+    },
+    {
+      "aspect": "Communications",
+      "value": "CAN-FD",
+      "brief_evidence": "encoder/Hall inputs, and CAN-FD."
+    },
+    {
+      "aspect": "Power-loop geometry and copper",
+      "value": "Gate-drive and power-commutation loops explicit and compact; substantial copper for phase/bus current",
+      "brief_evidence": "The PCB must make the gate-drive and power-commutation loops explicit and compact, provide substantial copper for the phase/bus current"
+    },
+    {
+      "aspect": "Thermal path",
+      "value": "A plausible thermal path is required; which devices it serves and how it is built are not specified",
+      "brief_evidence": "and provide a plausible thermal path"
+    },
+    {
+      "aspect": "Connector placement",
+      "value": "DC power and motor-phase connectors should sit near the power stage (stated as a should, not a must)",
+      "brief_evidence": "Connectors for DC power and motor phases should sit near the power stage."
+    },
+    {
+      "aspect": "Board zoning",
+      "value": "Logic and communications should occupy a quieter region of the board (stated as a should, not a must)",
+      "brief_evidence": "Logic and communications should occupy a quieter region of the board."
     }
   ],
   "open_decisions": [
